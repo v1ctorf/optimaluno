@@ -1,8 +1,4 @@
-# add Card class from Card.py (this folder) and instantiate new card 
+from Deck import Deck
 
-from Card import Card
-
-card = Card("R", 5)
-
-print(card.color)
-print(card.value)
+deck = Deck()
+deck.show_all_cards()
