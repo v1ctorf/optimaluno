@@ -5,7 +5,14 @@ class Player:
         self.name = name
         self.handCards = []
 
-    # def draw(self, deck):
-    #     self.handCards.append(drawPile.dealCard())  
-    #     return self
+
+    def assessHand(self):
+        self.handCards.sort(key=lambda x: x.value)
+        self.handCards.sort(key=lambda x: x.color)
+        return self.handCards
+
+
+    def play(self):
+        card = self.handCards.pop(0)
+        return card
 
