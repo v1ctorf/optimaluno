@@ -1,2 +1,3 @@
 # Optimal UNO
-Simulates UNO matches to collect data.
+- Simulates UNO matches
+- Generates data for analysis
