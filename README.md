@@ -1,2 +1,2 @@
-# optimaluno
-Simulates UNO matches to collect data
+# Optimal UNO
+Simulates UNO matches to collect data.
