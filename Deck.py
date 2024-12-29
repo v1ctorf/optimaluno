@@ -21,3 +21,6 @@ class Deck(object):
     def show_all_cards(self):
         for card in self.cards:
             print(card.color, card.value)
+
+    def dealCard(self):
+        return self.cards.pop() if len(self.cards) > 0 else None
