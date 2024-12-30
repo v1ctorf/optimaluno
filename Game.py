@@ -34,12 +34,13 @@ class Game:
         else:
             print(player.name + " plays " + card.color + " " + card.value)
         
-        print("Cards by player:", end=" ")
+        print("distribution:", end=" ")
 
         for player in self.players:
-            print(player.name + ": " + str(len(player.handCards)), end=", ")
+            print(player.name + ": " + str(len(player.handCards)), end=" | ")
 
-        print("\n")
+        print("deck: " + str(len(self.deck.cards)), end=" | ")
+        print("discards: " + str(len(self.discards)), end="\n\n")
 
 
     def checkWin(self):
@@ -68,8 +69,9 @@ class Game:
 
                 if self.checkWin():
                     self.deck.cards = []
-                if not self.deck.cards:
                     break
-            
+                
+                if not self.deck.cards:
+                    raise Exception("No more cards in deck!")
         
         print("Game over!")
