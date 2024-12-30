@@ -26,8 +26,8 @@ class Game:
             print("\n")
     
 
-    def log(self, turn_no, player=None, card=None):
-        print(str(turn_no), end=") ")
+    def log(self, player=None, card=None):
+        print(str(len(self.discards)), end=") ")
 
         if not player:
             print("First card is " + card.color + " " + card.value)
@@ -52,20 +52,19 @@ class Game:
 
 
     def play(self):
-        turn_no = 1
-
-        while self.deck.cards:            
+        while self.deck.cards:       
             if not self.discards:
                 turn = self.deck.cards.pop()
                 self.discards.append(turn)
-                self.log(turn_no, None, turn)
+                self.log(None, turn)
                 continue
 
+            # if len(self.discards) > 1
+
             for player in self.players:
-                turn_no = turn_no + 1
-                turn = player.play()
+                turn = player.play(self.discards[-1])
                 self.discards.append(turn)
-                self.log(turn_no, player, turn)
+                self.log(player, turn)
 
                 if self.checkWin():
                     self.deck.cards = []

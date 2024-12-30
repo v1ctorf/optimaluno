@@ -6,13 +6,9 @@ class Player:
         self.handCards = []
 
 
-    def assessHand(self):
-        self.handCards.sort(key=lambda x: x.value)
-        self.handCards.sort(key=lambda x: x.color)
-        return self.handCards
+    def play(self, currentCard):
+        # print(self.name + 'is assessing ' + currentCard.color + ' ' + currentCard.value)
 
-
-    def play(self):
         card = self.handCards.pop(0)
         return card
 
