@@ -35,7 +35,8 @@ class Game:
             print(player.name + ": " + str(len(player.handCards)), end=" | ")
 
         print("deck: " + str(len(self.deck.cards)), end=" | ")
-        print("discards: " + str(len(self.discards)), end="\n\n")
+        print("discards: " + str(len(self.discards)), end=" | ")
+        print("chosen colour: " + card.chosenColor, end="\n\n")
 
     def checkWin(self):
         for player in self.players:
@@ -47,12 +48,20 @@ class Game:
     def play(self):
         current_index = 0
         nextPlayerMustSkip = False
+        color = None
 
         while self.deck.cards:
             if not self.discards:
                 turn = self.deck.cards.pop()
                 self.discards.append(turn)
+                turn.chosenColor = turn.color
+                color = turn.chosenColor
+                # TODO: handle if first card is a wild card
                 nextPlayerMustSkip = turn.value == 'skip'
+
+                if turn.value == 'reverse':
+                    self.direction *= -1
+
                 self.log(None, turn)
                 continue
 
@@ -67,12 +76,12 @@ class Game:
             turn = player.play(currentCard)
             self.log(player, turn)
             self.discards.append(turn)
+            colour = turn.chosenColor
 
             if turn.value == 'skip':
                 nextPlayerMustSkip = True
-
             elif turn.value == 'reverse':
-                self.direction *= -1  # Change direction
+                self.direction *= -1
 
             if self.checkWin():
                 self.deck.cards = []

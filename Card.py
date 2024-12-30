@@ -3,3 +3,4 @@ class Card(object):
         self.color = c
         self.type = t
         self.value = v
+        self.chosenColor = None
