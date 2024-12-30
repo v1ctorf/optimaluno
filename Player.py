@@ -7,7 +7,7 @@ class Player:
 
 
     def play(self, currentCard):
-        # print(self.name + 'is assessing ' + currentCard.color + ' ' + currentCard.value)
+        # print(self.name + ' is assessing ' + currentCard.color + ' ' + currentCard.value, end="\n\n")
 
         card = self.handCards.pop(0)
         return card

@@ -27,8 +27,6 @@ class Game:
     
 
     def log(self, player=None, card=None):
-        print(str(len(self.discards)), end=") ")
-
         if not player:
             print("First card is " + card.color + " " + card.value)
         else:
@@ -52,19 +50,31 @@ class Game:
 
 
     def play(self):
-        while self.deck.cards:       
+        while self.deck.cards:    
             if not self.discards:
                 turn = self.deck.cards.pop()
                 self.discards.append(turn)
+                
+                nextPlayerMustSkip = turn.value == 'skip'
+
                 self.log(None, turn)
                 continue
 
-            # if len(self.discards) > 1
+            if len(self.discards) >= 1:
+                currentCard = self.discards[-1]
 
             for player in self.players:
-                turn = player.play(self.discards[-1])
-                self.discards.append(turn)
+                if nextPlayerMustSkip:
+                    nextPlayerMustSkip = False
+                    continue
+                
+                turn = player.play(currentCard)
                 self.log(player, turn)
+                self.discards.append(turn)
+
+                if turn.value == 'skip':
+                    # print(player.name + ' forces next player to skip', end="\n\n")
+                    nextPlayerMustSkip = True
 
                 if self.checkWin():
                     self.deck.cards = []
