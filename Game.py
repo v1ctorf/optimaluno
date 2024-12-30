@@ -5,18 +5,16 @@ class Game:
         self.deck = Deck()
         self.players = []
         self.discards = []
-
+        self.direction = 1  # 1 for forward, -1 for reverse
 
     def deal(self):
         for i in range(7):
             for player in self.players:
                 player.handCards.append(self.deck.dealCard())
 
-
     def addPlayer(self, player):
         self.players.append(player)
         return self
-
 
     def show_all_players(self):
         for player in self.players:
@@ -24,7 +22,6 @@ class Game:
             for card in player.handCards:
                 print(card.color + " " + card.value, end=", ")
             print("\n")
-    
 
     def log(self, player=None, card=None):
         if not player:
@@ -40,7 +37,6 @@ class Game:
         print("deck: " + str(len(self.deck.cards)), end=" | ")
         print("discards: " + str(len(self.discards)), end="\n\n")
 
-
     def checkWin(self):
         for player in self.players:
             if not player.handCards:
@@ -48,39 +44,43 @@ class Game:
                 return True
         return
 
-
     def play(self):
-        while self.deck.cards:    
+        current_index = 0
+        nextPlayerMustSkip = False
+
+        while self.deck.cards:
             if not self.discards:
                 turn = self.deck.cards.pop()
                 self.discards.append(turn)
-                
                 nextPlayerMustSkip = turn.value == 'skip'
-
                 self.log(None, turn)
                 continue
 
-            if len(self.discards) >= 1:
-                currentCard = self.discards[-1]
+            currentCard = self.discards[-1]
 
-            for player in self.players:
-                if nextPlayerMustSkip:
-                    nextPlayerMustSkip = False
-                    continue
-                
-                turn = player.play(currentCard)
-                self.log(player, turn)
-                self.discards.append(turn)
+            if nextPlayerMustSkip:
+                current_index = (current_index + self.direction) % len(self.players)
+                nextPlayerMustSkip = False
+                continue
 
-                if turn.value == 'skip':
-                    # print(player.name + ' forces next player to skip', end="\n\n")
-                    nextPlayerMustSkip = True
+            player = self.players[current_index]
+            turn = player.play(currentCard)
+            self.log(player, turn)
+            self.discards.append(turn)
 
-                if self.checkWin():
-                    self.deck.cards = []
-                    break
-                
-                if not self.deck.cards:
-                    raise Exception("No more cards in deck!")
-        
+            if turn.value == 'skip':
+                nextPlayerMustSkip = True
+
+            elif turn.value == 'reverse':
+                self.direction *= -1  # Change direction
+
+            if self.checkWin():
+                self.deck.cards = []
+                break
+
+            if not self.deck.cards:
+                raise Exception("No more cards in deck!")
+
+            current_index = (current_index + self.direction) % len(self.players)
+
         print("Game over!")
