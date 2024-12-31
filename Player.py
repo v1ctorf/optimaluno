@@ -8,9 +8,23 @@ class Player:
 
 
     def play(self, currentCard):
-        # print(self.name + ' is assessing ' + currentCard.color + ' ' + currentCard.value, end="\n\n")
+        print('- ' + self.name + ' is assessing ' + currentCard.color + ' ' + currentCard.value)
+        print('- ' + self.name + '\'s hands', end=": ")
+        for card in self.handCards:
+            print(card.color + ' ' + card.value, end="; ")
+        print('\n')
 
-        card = self.handCards.pop(0)
+        playableCards = []
+
+        for card in self.handCards:
+            if card.color == currentCard.color or card.value == currentCard.value or card.color == 'W':
+                playableCards.append(card)
+
+        if not playableCards:
+            return None
+        
+        card = playableCards.pop()
+        self.handCards.remove(card)
 
         if card.color == 'W':
             colors = ['B', 'G', 'R', 'Y']
